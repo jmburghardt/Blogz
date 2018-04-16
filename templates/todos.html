@@ -5,22 +5,22 @@
     <form method='post'>
         <label>
             New Task:
-            <input type="text" name='task' />
+            <input type="text" name='post' />
         </label>
-        <input type="submit" value='Add Task' />
+        <input type="submit" value='Add Post' />
     </form>
 
     <hr />
 
-    {% if tasks|length == 0 %}
+    {% if posts|length == 0 %}
     <p>No posts yet!</p>
     {% else %}
 
         <ul>
-            {% for task in tasks %}
-            <li>{{task.name}}
+            {% for post in posts %}
+            <li>{{post.name}}
                 <form method="POST" action="/delete-task" style="display:inline-block;">
-                    <input type="hidden" name="task-id" value="{{task.id}}" />
+                    <input type="hidden" name="post-id" value="{{post.id}}" />
                     <input type="submit" value="Delete Post!" />
                 </form>
             </li>
@@ -34,8 +34,8 @@
     <h2>Completed</h2>
 
     <ul>
-        {% for task in completed_tasks %}
-        <li>{{task.name}}</li>
+        {% for post in completed_post %}
+        <li>{{post.name}}</li>
         {% endfor %}
     </ul>
 
