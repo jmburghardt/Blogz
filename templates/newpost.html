@@ -1,17 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <head>
+        <style> .error{ color:red; }</style>
+    </head>
 
     <h1><center>Add A Blog Entry</center></h1>
-    <form action="/" method='post'>
+    <form action="/newpost" method='post'>
         <label>
             Title for your new blog:
             <br/><input type="text" name="blog_title" />
+                    <p class="error">{{title_error}}</p>
         </label>
         <br/>
         <label>
             Your new blog:
             <br/><input type="text" name="blog_entry" />
+           
+                    <p class="error">{{body_error}}</p>
+           
         </label>
         <br/>
         <input type="submit" value="Add Entry" />

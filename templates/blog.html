@@ -3,11 +3,13 @@
 {% block content %}
 
     <h1><center>Build A Blog</center></h1>
-
-    {% for post in posts %}
-        <li>{{post.title}}</li>
-        <li>{{post.body}}</li>
-        <hr />
-    {% endfor %}
+        {% for post in posts %}
+            <a href='{{url_for('index', id=post.id )}}'><li>{{post.title}}</li></a>
+            <li>{{post.body}}</li>
+            <hr />
+        {% endfor %}
+    
+    
+    
 
 {% endblock %}

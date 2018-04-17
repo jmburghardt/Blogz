@@ -23,13 +23,10 @@ class Blog(db.Model):
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-
-    if request.method == 'POST':
-        blog_title = request.form['blog_title']
-        blog_entry = request.form['blog_entry']
-        new_post = Blog(blog_title, blog_entry)
-        db.session.add(new_post)
-        db.session.commit()
+    if request.args.get("id"):
+        new_post = Blog.query.filter_by(id=request.args.get("id")).first()
+        return render_template("newentry.html", new_post=new_post)
+    
     
     posts = Blog.query.filter_by(completed=False).all()
     completed_post = Blog.query.filter_by(completed=True).all()
@@ -39,14 +36,27 @@ def index():
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def new_post():
+    title_error = ''
+    body_error = ''
+    if request.method == 'POST':
+        title = request.form['blog_title']
+        body = request.form['blog_entry']
+        if not title:
+            title_error = "Please enter a title"
 
-    #post_id = int(request.form['post-id'])
-    #post = Blog.query.get(post_id)
-    #post.completed = True
-    #db.session.add(post)
-    #db.session.commit()
+        if not body:
+            body_error = "Please add an entry"
 
-    return render_template('newpost.html', title='Build A Blog')
+        if not title_error and not body_error:
+            blog_title = request.form['blog_title']
+            blog_entry = request.form['blog_entry']
+            new_post = Blog(blog_title, blog_entry)
+            db.session.add(new_post)
+            db.session.commit()
+            new_post.id
+            return redirect('/?id=' + str(new_post.id))
+
+    return render_template('newpost.html', title='Build A Blog', title_error=title_error, body_error=body_error)
 
 if __name__ == '__main__':
     app.run()
