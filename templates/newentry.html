@@ -7,6 +7,7 @@
     </head>
     <body>
         <p>{{new_post.body}}</p>
+        <li>Written by <a href='/home?user={{new_post.owner.email}}'>{{new_post.owner.email}}</a></li>
     </body>
 
 {% endblock %}

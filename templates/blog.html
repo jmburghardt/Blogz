@@ -2,10 +2,11 @@
 
 {% block content %}
 
-    <h1><center>Build A Blog</center></h1>
+    <h1><center>YOUR BLOG ZOMG</center></h1>
         {% for post in posts %}
             <a href='{{url_for('index', id=post.id )}}'><li>{{post.title}}</li></a>
-            <li>{{post.body}}</li>
+            <li>{{post.body}}</li> 
+            <li>Written by <a href='/home?user={{post.owner.email}}'>{{post.owner.email}}</a></li>        
             <hr />
         {% endfor %}
     

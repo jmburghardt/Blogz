@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1><center>ALL THE BLOG POSTS</center></h1>
+{% for post in posts %}
+    <a href='{{url_for('index', id=post.id)}}'><li>{{post.title}}</li></a>
+    <li>{{post.body}}</li>
+    <li>Written by <a href='/home?user={{post.owner.email}}'>{{post.owner.email}}</a></li>
+    <hr />
+{% endfor %}
+{% endblock %}

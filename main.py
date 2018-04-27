@@ -63,10 +63,10 @@ def register():
         password = request.form['password']
         verify = request.form['verify']
         existing_user = User.query.filter_by(email=email).first()
-        if email == '':
+        if email == '' or email < 3:
             flash('Please enter a valid email address')
             return redirect('/register')
-        if password == "":
+        if password == "" or password < 3:
             flash('Please enter a password')
             return redirect('/register')
         if verify == "":
@@ -94,19 +94,44 @@ def logout():
     del session['email']
     return redirect('/')
 
+@app.route('/users')
+def user_list():
+    users = User.query.all()
+    return render_template('users.html', users=users)
+
+@app.route('/home', methods=['POST', 'GET'])
+def main(): 
+
+    #if request.args.get("user"):
+     #   real_user = Blog.query.filter_by(user=request.args.get('user')).first()
+      #  return render_template('blog.html', real_user=real_user)
+
+    if request.args.get('user'):
+        blah = request.args.get('user')
+        owner = User.query.filter_by(email=blah).first()
+        posts = Blog.query.filter_by(owner=owner).all()
+        return render_template('blog.html',title="Build A Blog", 
+            posts=posts)
+
+    owner = User.query.filter_by(email=session['email']).first()
+    posts = Blog.query.filter_by(owner=owner).all()
+    return render_template('blog.html',title="Build A Blog", 
+        posts=posts)
+
+
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    owner = User.query.filter_by(email=session['email']).first()
     
     if request.args.get("id"):
         new_post = Blog.query.filter_by(id=request.args.get("id")).first()
         return render_template("newentry.html", new_post=new_post)
     
     
-    posts = Blog.query.filter_by(completed=False, owner=owner).all()
+    posts = Blog.query.all()
+    owner = Blog.query.filter_by(id=request.args.get("id")).first()
     completed_post = Blog.query.filter_by(completed=True).all()
-    return render_template('blog.html',title="Build A Blog", 
+    return render_template('index.html',title="Build A Blog", 
         posts=posts, completed_post=completed_post)
 
 
